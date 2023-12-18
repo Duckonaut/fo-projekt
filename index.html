@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+    <script src="rope.js"></script>
+    <script src="physics.js"></script>
+    <script>
+      window.onload = function() {
+        // get the id="physics" element from the DOM
+        const physicsDiv = document.getElementById("physics");
+        const physics = new Physics(physicsDiv);
+        physics.start();
+        console.log(physics);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="main-pane">
+      <h1>Rope Physics</h1>
+      <div id="physics" />
+    </div>
+  </body>
+</html>

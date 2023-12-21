@@ -135,6 +135,44 @@ class Rope {
     }
   }
 
+  totalLength() {
+    let length = 0;
+    this.constraints.forEach((constraint) => {
+      const dx = constraint.vertexB.x - constraint.vertexA.x;
+      const dy = constraint.vertexB.y - constraint.vertexA.y;
+      length += Math.sqrt(dx * dx + dy * dy);
+    });
+    return length;
+  }
+
+  maxStretch() {
+    let maxStretch = 0;
+    this.constraints.forEach((constraint) => {
+      const dx = constraint.vertexB.x - constraint.vertexA.x;
+      const dy = constraint.vertexB.y - constraint.vertexA.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const stretch = distance / constraint.length;
+      if (stretch > maxStretch) {
+        maxStretch = stretch;
+      }
+    });
+    return maxStretch;
+  }
+
+  minStretch() {
+    let minStretch = Number.MAX_VALUE;
+    this.constraints.forEach((constraint) => {
+      const dx = constraint.vertexB.x - constraint.vertexA.x;
+      const dy = constraint.vertexB.y - constraint.vertexA.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const stretch = distance / constraint.length;
+      if (stretch < minStretch) {
+        minStretch = stretch;
+      }
+    });
+    return minStretch;
+  }
+
   draw(graphics) {
     graphics.lineStyle(2, 0xffffff, 1);
 

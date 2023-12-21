@@ -2,6 +2,8 @@ class Physics {
   constructor(parent) {
     this.parent = parent;
     this.app = new PIXI.Application({
+      width: 640,
+      height: 480,
       antialias: true,
       eventMode: 'passive',
     });
@@ -25,7 +27,14 @@ class Physics {
     });
     this.app.stage.addChild(this.container);
 
-    this.rope = new Rope(20, 4, 100, 100, 10);
+    this.world = {
+      colliders: [],
+    };
+
+    this.world.colliders.push(new CircleCollider(new Vector2(320, 240), 64));
+    this.world.colliders.push(new AABBCollider(new Vector2(320, 640), new Vector2(1000, 400)));
+
+    this.rope = new Rope(this.world, 32, 16, 100, 100, 16);
     this.graphics = new PIXI.Graphics();
     this.container.addChild(this.graphics);
 
@@ -45,6 +54,9 @@ class Physics {
 
   draw(graphics) {
     graphics.clear();
+    for (let i = 0; i < this.world.colliders.length; i++) {
+      this.world.colliders[i].draw(graphics);
+    }
     this.rope.draw(graphics);
   }
 }

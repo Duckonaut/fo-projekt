@@ -1,11 +1,12 @@
 const DRAG = 0.97;
 
 class Vertex {
-  constructor(x, y) {
+  constructor(x, y, unmovable = false) {
     this.lastX = x;
     this.lastY = y;
     this.x = x;
     this.y = y;
+    this.unmovable = unmovable;
   }
 
   draw(graphics) {
@@ -36,7 +37,8 @@ class Constraint {
 }
 
 class Rope {
-  constructor(numSegments, length, x, y, steps) {
+  constructor(world, numSegments, length, x, y, steps) {
+    this.world = world;
     this.numSegments = numSegments;
     this.length = length;
 
@@ -67,18 +69,20 @@ class Rope {
   }
 
   satisfyConstraints() {
-    this.vertices.forEach((vertex) => {
-      if (vertex.y > 500) {
-        const dx = (vertex.x - vertex.lastX) * DRAG;
-        const dy = (vertex.y - vertex.lastY) * DRAG;
-
-        const speed = Math.sqrt(dx * dx + dy * dy);
-        vertex.y = 500;
-        vertex.lastX = vertex.lastX + (dy / speed) * dx, 500 + dy * 0.1;
-      }
+    this.world.colliders.forEach((collider) => {
+      this.vertices.forEach((vertex) => {
+        if (collider.contains(new Vector2(vertex.x, vertex.y))) {
+          const surfacePoint = collider.getClosestSurfacePoint(new Vector2(vertex.x, vertex.y));
+          vertex.x = surfacePoint.x;
+          vertex.y = surfacePoint.y;
+        }
+      });
     });
 
     this.constraints.forEach((constraint) => {
+      if (constraint.vertexA.unmovable && constraint.vertexB.unmovable) {
+        return;
+      }
       let dx = constraint.vertexB.x - constraint.vertexA.x;
       let dy = constraint.vertexB.y - constraint.vertexA.y;
       let distance = Math.sqrt(dx * dx + dy * dy);
@@ -92,15 +96,30 @@ class Rope {
       const fraction = ((constraint.length - distance) / distance) / 2;
       const offsetX = dx * fraction;
       const offsetY = dy * fraction;
-
-      constraint.vertexA.setPosition(constraint.vertexA.x - offsetX, constraint.vertexA.y - offsetY);
-      constraint.vertexB.setPosition(constraint.vertexB.x + offsetX, constraint.vertexB.y + offsetY);
+      if (constraint.vertexA.unmovable) {
+        constraint.vertexB.x = constraint.vertexB.x + offsetX * 2;
+        constraint.vertexB.y = constraint.vertexB.y + offsetY * 2;
+      }
+      else if (constraint.vertexB.unmovable) {
+        constraint.vertexA.x = constraint.vertexA.x - offsetX * 2;
+        constraint.vertexA.y = constraint.vertexA.y - offsetY * 2;
+      }
+      else {
+        constraint.vertexA.x = constraint.vertexA.x - offsetX;
+        constraint.vertexA.y = constraint.vertexA.y - offsetY;
+        constraint.vertexB.x = constraint.vertexB.x + offsetX;
+        constraint.vertexB.y = constraint.vertexB.y + offsetY;
+      }
     });
   }
 
   update(input) {
-    // Apply gravity
+    this.vertices[0].setPosition(input.x, input.y);
+
     this.vertices.forEach((vertex) => {
+      if (vertex.unmovable) {
+        return;
+      }
       const dx = vertex.x - vertex.lastX;
       const dy = vertex.y - vertex.lastY;
 
@@ -109,11 +128,8 @@ class Rope {
 
       vertex.x += dx;
       vertex.y += dy;
-      vertex.y += 1.0;
+      vertex.y += 2.0;
     });
-
-    this.vertices[0].setPosition(input.x, input.y);
-    // apply constraints
     for (let i = 0; i < this.steps; i++) {
       this.satisfyConstraints();
     }

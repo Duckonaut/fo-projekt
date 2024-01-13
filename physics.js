@@ -39,7 +39,7 @@ class Physics {
     });
 
     this.slider_1_label = document.createElement('label');
-    this.slider_1_label.innerHTML = 'Segment length: ' + this.slider_1.value;
+    this.slider_1_label.innerHTML = 'Number of segments: ' + this.slider_1.value;
     this.slider_1_label.style.display = 'block';
     this.slider_1_label.style.textAlign = 'center';
 
@@ -61,7 +61,7 @@ class Physics {
     });
 
     this.slider_2_label = document.createElement('label');
-    this.slider_2_label.innerHTML = 'Number of segments: ' + this.slider_2.value;
+    this.slider_2_label.innerHTML = 'Segment length: ' + this.slider_2.value;
     this.slider_2_label.style.display = 'block';
     this.slider_2_label.style.textAlign = 'center';
   

@@ -22,6 +22,22 @@ class Physics {
     this.segment_length = 30;
     this.gravity = 0.2;
 
+    this.checkbox_1 = document.createElement('input');
+    this.checkbox_1.type = 'checkbox';
+    this.checkbox_1.checked = false;
+    this.checkbox_1.addEventListener('change', (event) => {
+      this.rope.set_pinned_down_state(this.checkbox_1.checked);
+    });
+    this.checkbox_1.style.display = 'block';
+    this.checkbox_1.style.marginTop = '8px';
+    this.checkbox_1.style.marginLeft = 'auto';
+    this.checkbox_1.style.marginRight = 'auto';
+
+    this.checkbox_1_label = document.createElement('label');
+    this.checkbox_1_label.innerHTML = 'Pinned down';
+    this.checkbox_1_label.style.display = 'block';
+    this.checkbox_1_label.style.textAlign = 'center';
+
     this.slider_1 = document.createElement('input');
     this.slider_1.type = 'range';
     this.slider_1.min = '1';
@@ -88,6 +104,14 @@ class Physics {
     this.slider_3_label.innerHTML = 'Gravity: ' + this.slider_3.value;
     this.slider_3_label.style.display = 'block';
     this.slider_3_label.style.textAlign = 'center';
+
+    this.paused = false
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key == 's') {
+        this.paused = !this.paused;
+      }
+    });
   
     this.width = 640
     this.height = 480
@@ -139,6 +163,8 @@ class Physics {
   start() {
     this.parent.appendChild(this.app.view);
     this.parent.appendChild(this.stats);
+    this.parent.appendChild(this.checkbox_1);
+    this.parent.appendChild(this.checkbox_1_label);
     this.parent.appendChild(this.slider_1);
     this.parent.appendChild(this.slider_1_label);
     this.parent.appendChild(this.slider_2);
@@ -148,6 +174,11 @@ class Physics {
   }
 
   update(input) {
+    if(this.paused)
+    {
+      return
+    }
+
     if (input.x < 0 || input.x > this.width)
     {
       return

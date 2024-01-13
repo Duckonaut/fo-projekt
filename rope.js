@@ -186,4 +186,16 @@ class Rope {
       vertex.draw(graphics);
     });
   }
+
+  set_pinned_down_state(state)
+  {
+    if(state)
+    {
+      this.vertices[this.numSegments-1].unmovable = true;
+    }
+    else
+    {
+      this.vertices[this.numSegments-1].unmovable = false;
+    }
+  }
 }

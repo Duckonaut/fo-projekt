@@ -26,7 +26,7 @@ class Physics {
     this.checkbox_1.type = 'checkbox';
     this.checkbox_1.checked = false;
     this.checkbox_1.addEventListener('change', (event) => {
-      this.rope.set_pinned_down_state(this.checkbox_1.checked);
+      this.rope.setPinnedDownState(this.checkbox_1.checked);
     });
     this.checkbox_1.style.display = 'block';
     this.checkbox_1.style.marginTop = '8px';
@@ -53,6 +53,7 @@ class Physics {
       this.number_of_segments = slider_value;
       this.slider_1_label.innerHTML = 'Number of segments: ' + this.number_of_segments;
       this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
+      this.checkbox_1.checked = false;
     });
 
     this.slider_1_label = document.createElement('label');
@@ -75,6 +76,7 @@ class Physics {
       this.segment_length = slider_value;
       this.slider_2_label.innerHTML = 'Segment length: ' + this.segment_length;
       this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
+      this.checkbox_1.checked = false;
     });
 
     this.slider_2_label = document.createElement('label');

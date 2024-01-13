@@ -24,10 +24,10 @@ class Vertex {
 }
 
 class Constraint {
-  constructor(vertexA, vertexB, segment_length) {
+  constructor(vertexA, vertexB, segmentLength) {
     this.vertexA = vertexA;
     this.vertexB = vertexB;
-    this.segment_length = segment_length;
+    this.segmentLength = segmentLength;
   }
 
   draw(graphics) {
@@ -37,10 +37,10 @@ class Constraint {
 }
 
 class Rope {
-  constructor(world, numSegments, segment_length, x, y, steps, gravity) {
+  constructor(world, numSegments, segmentLength, x, y, steps, gravity) {
     this.world = world;
     this.numSegments = numSegments;
-    this.segment_length = segment_length;
+    this.segmentLength = segmentLength;
 
     this.x = x;
     this.y = y;
@@ -65,7 +65,7 @@ class Rope {
 
   createConstraints() {
     for (let i = 0; i < this.numSegments - 1; i++) {
-      const constraint = new Constraint(this.vertices[i], this.vertices[i + 1], this.segment_length);
+      const constraint = new Constraint(this.vertices[i], this.vertices[i + 1], this.segmentLength);
       this.constraints.push(constraint);
     }
   }
@@ -95,7 +95,7 @@ class Rope {
         dy = (Math.random() - 0.5) * 0.001;
       }
 
-      const fraction = ((constraint.segment_length - distance) / distance) / 2;
+      const fraction = ((constraint.segmentLength - distance) / distance) / 2;
       const offsetX = dx * fraction;
       const offsetY = dy * fraction;
       if (constraint.vertexA.unmovable) {
@@ -153,7 +153,7 @@ class Rope {
       const dx = constraint.vertexB.x - constraint.vertexA.x;
       const dy = constraint.vertexB.y - constraint.vertexA.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const stretch = distance / constraint.segment_length;
+      const stretch = distance / constraint.segmentLength;
       if (stretch > maxStretch) {
         maxStretch = stretch;
       }
@@ -167,7 +167,7 @@ class Rope {
       const dx = constraint.vertexB.x - constraint.vertexA.x;
       const dy = constraint.vertexB.y - constraint.vertexA.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const stretch = distance / constraint.segment_length;
+      const stretch = distance / constraint.segmentLength;
       if (stretch < minStretch) {
         minStretch = stretch;
       }
@@ -187,7 +187,7 @@ class Rope {
     });
   }
 
-  set_pinned_down_state(state)
+  setPinnedDownState(state)
   {
     if(state)
     {

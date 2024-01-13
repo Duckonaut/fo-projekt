@@ -108,6 +108,7 @@ class Physics {
     this.paused = false
 
     document.addEventListener('keydown', (event) => {
+      // don't use spacebar here, it for example toogles selcted checkbox
       if (event.key == 's') {
         this.paused = !this.paused;
       }

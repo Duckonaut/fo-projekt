@@ -24,10 +24,10 @@ class Vertex {
 }
 
 class Constraint {
-  constructor(vertexA, vertexB, length) {
+  constructor(vertexA, vertexB, segment_length) {
     this.vertexA = vertexA;
     this.vertexB = vertexB;
-    this.length = length;
+    this.segment_length = segment_length;
   }
 
   draw(graphics) {
@@ -37,10 +37,10 @@ class Constraint {
 }
 
 class Rope {
-  constructor(world, numSegments, length, x, y, steps) {
+  constructor(world, numSegments, segment_length, x, y, steps) {
     this.world = world;
     this.numSegments = numSegments;
-    this.length = length;
+    this.segment_length = segment_length;
 
     this.x = x;
     this.y = y;
@@ -63,7 +63,7 @@ class Rope {
 
   createConstraints() {
     for (let i = 0; i < this.numSegments - 1; i++) {
-      const constraint = new Constraint(this.vertices[i], this.vertices[i + 1], this.length);
+      const constraint = new Constraint(this.vertices[i], this.vertices[i + 1], this.segment_length);
       this.constraints.push(constraint);
     }
   }
@@ -93,7 +93,7 @@ class Rope {
         dy = (Math.random() - 0.5) * 0.001;
       }
 
-      const fraction = ((constraint.length - distance) / distance) / 2;
+      const fraction = ((constraint.segment_length - distance) / distance) / 2;
       const offsetX = dx * fraction;
       const offsetY = dy * fraction;
       if (constraint.vertexA.unmovable) {
@@ -136,13 +136,13 @@ class Rope {
   }
 
   totalLength() {
-    let length = 0;
+    let total_length = 0;
     this.constraints.forEach((constraint) => {
       const dx = constraint.vertexB.x - constraint.vertexA.x;
       const dy = constraint.vertexB.y - constraint.vertexA.y;
-      length += Math.sqrt(dx * dx + dy * dy);
+      total_length += Math.sqrt(dx * dx + dy * dy);
     });
-    return length;
+    return total_length;
   }
 
   maxStretch() {
@@ -151,7 +151,7 @@ class Rope {
       const dx = constraint.vertexB.x - constraint.vertexA.x;
       const dy = constraint.vertexB.y - constraint.vertexA.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const stretch = distance / constraint.length;
+      const stretch = distance / constraint.segment_length;
       if (stretch > maxStretch) {
         maxStretch = stretch;
       }
@@ -165,7 +165,7 @@ class Rope {
       const dx = constraint.vertexB.x - constraint.vertexA.x;
       const dy = constraint.vertexB.y - constraint.vertexA.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const stretch = distance / constraint.length;
+      const stretch = distance / constraint.segment_length;
       if (stretch < minStretch) {
         minStretch = stretch;
       }

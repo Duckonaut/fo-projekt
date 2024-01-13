@@ -37,7 +37,7 @@ class Constraint {
 }
 
 class Rope {
-  constructor(world, numSegments, segment_length, x, y, steps) {
+  constructor(world, numSegments, segment_length, x, y, steps, gravity) {
     this.world = world;
     this.numSegments = numSegments;
     this.segment_length = segment_length;
@@ -46,6 +46,8 @@ class Rope {
     this.y = y;
 
     this.steps = steps;
+
+    this.gravity = gravity
 
     this.vertices = [];
     this.constraints = [];
@@ -128,7 +130,7 @@ class Rope {
 
       vertex.x += dx;
       vertex.y += dy;
-      vertex.y += 2.0;
+      vertex.y += this.gravity;
     });
     for (let i = 0; i < this.steps; i++) {
       this.satisfyConstraints();

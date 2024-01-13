@@ -20,6 +20,7 @@ class Physics {
 
     this.number_of_segments = 15;
     this.segment_length = 30;
+    this.gravity = 0.2;
 
     this.slider_1 = document.createElement('input');
     this.slider_1.type = 'range';
@@ -35,7 +36,7 @@ class Physics {
       const slider_value = parseInt(event.target.value);
       this.number_of_segments = slider_value;
       this.slider_1_label.innerHTML = 'Number of segments: ' + this.number_of_segments;
-      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16);
+      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
     });
 
     this.slider_1_label = document.createElement('label');
@@ -57,13 +58,36 @@ class Physics {
       const slider_value = parseInt(event.target.value);
       this.segment_length = slider_value;
       this.slider_2_label.innerHTML = 'Segment length: ' + this.segment_length;
-      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16);
+      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
     });
 
     this.slider_2_label = document.createElement('label');
     this.slider_2_label.innerHTML = 'Segment length: ' + this.slider_2.value;
     this.slider_2_label.style.display = 'block';
     this.slider_2_label.style.textAlign = 'center';
+
+    this.slider_3 = document.createElement('input');
+    this.slider_3.type = 'range';
+    this.slider_3.min = '0.0';
+    this.slider_3.max = '1.0';
+    this.slider_3.step = '0.01';
+    this.slider_3.value = this.gravity;
+    this.slider_3.style.display = 'block';
+    this.slider_3.style.width = '540px';
+    this.slider_3.style.marginTop = '8px';
+    this.slider_3.style.marginLeft = 'auto';
+    this.slider_3.style.marginRight = 'auto';
+    this.slider_3.addEventListener('input', (event) => {
+      const slider_value = parseFloat(event.target.value);
+      this.gravity = slider_value;
+      this.slider_3_label.innerHTML = 'Gravity: ' + this.gravity;
+      this.rope.gravity = this.gravity;
+    });
+
+    this.slider_3_label = document.createElement('label');
+    this.slider_3_label.innerHTML = 'Gravity: ' + this.slider_3.value;
+    this.slider_3_label.style.display = 'block';
+    this.slider_3_label.style.textAlign = 'center';
   
     this.width = 640
     this.height = 480
@@ -102,7 +126,7 @@ class Physics {
     this.world.colliders.push(new CircleCollider(new Vector2(220, 240), 40));
     this.world.colliders.push(new AABBCollider(new Vector2(320, 640), new Vector2(1000, 400)));
 
-    this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16);
+    this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
     this.graphics = new PIXI.Graphics();
     this.container.addChild(this.graphics);
 
@@ -119,6 +143,8 @@ class Physics {
     this.parent.appendChild(this.slider_1_label);
     this.parent.appendChild(this.slider_2);
     this.parent.appendChild(this.slider_2_label);
+    this.parent.appendChild(this.slider_3);
+    this.parent.appendChild(this.slider_3_label);
   }
 
   update(input) {

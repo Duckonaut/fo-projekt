@@ -10,7 +10,7 @@ h1 {
   padding: 0;
   width: 100%;
   text-align: center;
-  height: 10vh;
+  height: 5vh;
 }
 
 /* vertical column with horizontal centering */
@@ -28,4 +28,8 @@ canvas {
   width: 640px;
   height: 480px;
   display: block;
+}
+
+#controls {
+  text-align: center;
 }

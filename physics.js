@@ -45,7 +45,7 @@ class Physics {
     this.slider_1.max = '100';
     this.slider_1.value = this.number_of_segments;
     this.slider_1.style.display = 'block';
-    this.slider_1.style.width = '540px';
+    this.slider_1.style.width = '300px';
     this.slider_1.style.marginTop = '8px';
     this.slider_1.style.marginLeft = 'auto';
     this.slider_1.style.marginRight = 'auto';
@@ -70,7 +70,7 @@ class Physics {
     this.slider_2.max = '100';
     this.slider_2.value = this.segment_length;
     this.slider_2.style.display = 'block';
-    this.slider_2.style.width = '540px';
+    this.slider_2.style.width = '300px';
     this.slider_2.style.marginTop = '8px';
     this.slider_2.style.marginLeft = 'auto';
     this.slider_2.style.marginRight = 'auto';
@@ -96,7 +96,7 @@ class Physics {
     this.slider_3.step = '0.01';
     this.slider_3.value = this.gravity;
     this.slider_3.style.display = 'block';
-    this.slider_3.style.width = '540px';
+    this.slider_3.style.width = '300px';
     this.slider_3.style.marginTop = '8px';
     this.slider_3.style.marginLeft = 'auto';
     this.slider_3.style.marginRight = 'auto';
@@ -119,7 +119,7 @@ class Physics {
     this.slider_4.step = '1';
     this.slider_4.value = this.stiffness;
     this.slider_4.style.display = 'block';
-    this.slider_4.style.width = '540px';
+    this.slider_4.style.width = '300px';
     this.slider_4.style.marginTop = '8px';
     this.slider_4.style.marginLeft = 'auto';
     this.slider_4.style.marginRight = 'auto';

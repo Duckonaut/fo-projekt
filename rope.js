@@ -1,5 +1,3 @@
-const DRAG = 0.97;
-
 class Vertex {
   constructor(x, y, unmovable = false) {
     this.lastX = x;

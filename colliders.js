@@ -75,7 +75,7 @@ class Collider {
   }
 
   draw(graphics) {
-    graphics.beginFill(0xff0000);
+    graphics.beginFill(0x008000);
     graphics.drawCircle(this.position.x, this.position.y, 2);
     graphics.endFill();
   }
@@ -99,7 +99,7 @@ class CircleCollider extends Collider {
   }
 
   draw(graphics) {
-    graphics.beginFill(0xffffff);
+    graphics.beginFill(0x008000);
     graphics.drawCircle(this.position.x, this.position.y, this.radius);
     graphics.endFill();
   }
@@ -153,7 +153,7 @@ class AABBCollider extends Collider {
   }
 
   draw(graphics) {
-    graphics.beginFill(0xffffff);
+    graphics.beginFill(0x008000);
     graphics.drawRect(this.position.x - this.width / 2, this.position.y - this.height / 2, this.width, this.height);
     graphics.endFill();
   }

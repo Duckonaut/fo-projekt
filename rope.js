@@ -196,4 +196,14 @@ class Rope {
       this.vertices[this.numSegments-1].unmovable = false;
     }
   }
+
+  setGravity(value)
+  {
+    this.gravity = value;
+  }
+
+  setStiffness(value)
+  {
+    this.steps = value;
+  }
 }

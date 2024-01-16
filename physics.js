@@ -21,6 +21,7 @@ class Physics {
     this.number_of_segments = 15;
     this.segment_length = 30;
     this.gravity = 0.2;
+    this.stiffness = 15;
 
     this.checkbox_1 = document.createElement('input');
     this.checkbox_1.type = 'checkbox';
@@ -52,7 +53,9 @@ class Physics {
       const slider_value = parseInt(event.target.value);
       this.number_of_segments = slider_value;
       this.slider_1_label.innerHTML = 'Number of segments: ' + this.number_of_segments;
-      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
+      this.rope = new Rope(
+        this.world, this.number_of_segments, this.segment_length, 100, 100, this.stiffness, this.gravity
+      );
       this.checkbox_1.checked = false;
     });
 
@@ -75,7 +78,9 @@ class Physics {
       const slider_value = parseInt(event.target.value);
       this.segment_length = slider_value;
       this.slider_2_label.innerHTML = 'Segment length: ' + this.segment_length;
-      this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
+      this.rope = new Rope(
+        this.world, this.number_of_segments, this.segment_length, 100, 100, this.stiffness, this.gravity
+      );
       this.checkbox_1.checked = false;
     });
 
@@ -99,13 +104,36 @@ class Physics {
       const slider_value = parseFloat(event.target.value);
       this.gravity = slider_value;
       this.slider_3_label.innerHTML = 'Gravity: ' + this.gravity;
-      this.rope.gravity = this.gravity;
+      this.rope.setGravity(this.gravity);
     });
 
     this.slider_3_label = document.createElement('label');
     this.slider_3_label.innerHTML = 'Gravity: ' + this.slider_3.value;
     this.slider_3_label.style.display = 'block';
     this.slider_3_label.style.textAlign = 'center';
+
+    this.slider_4 = document.createElement('input');
+    this.slider_4.type = 'range';
+    this.slider_4.min = '1';
+    this.slider_4.max = '30';
+    this.slider_4.step = '1';
+    this.slider_4.value = this.stiffness;
+    this.slider_4.style.display = 'block';
+    this.slider_4.style.width = '540px';
+    this.slider_4.style.marginTop = '8px';
+    this.slider_4.style.marginLeft = 'auto';
+    this.slider_4.style.marginRight = 'auto';
+    this.slider_4.addEventListener('input', (event) => {
+      const slider_value = parseFloat(event.target.value);
+      this.stiffness = slider_value;
+      this.slider_4_label.innerHTML = 'Stiffness: ' + this.stiffness;
+      this.rope.setStiffness(this.stiffness);
+    });
+
+    this.slider_4_label = document.createElement('label');
+    this.slider_4_label.innerHTML = 'Stiffness: ' + this.slider_4.value;
+    this.slider_4_label.style.display = 'block';
+    this.slider_4_label.style.textAlign = 'center';
 
     this.paused = false
 
@@ -153,7 +181,9 @@ class Physics {
     this.world.colliders.push(new CircleCollider(new Vector2(220, 240), 40));
     this.world.colliders.push(new AABBCollider(new Vector2(320, 640), new Vector2(1000, 400)));
 
-    this.rope = new Rope(this.world, this.number_of_segments, this.segment_length, 100, 100, 16, this.gravity);
+    this.rope = new Rope(
+      this.world, this.number_of_segments, this.segment_length, 100, 100, this.stiffness, this.gravity
+    );
     this.graphics = new PIXI.Graphics();
     this.container.addChild(this.graphics);
 
@@ -174,6 +204,8 @@ class Physics {
     this.parent.appendChild(this.slider_2_label);
     this.parent.appendChild(this.slider_3);
     this.parent.appendChild(this.slider_3_label);
+    this.parent.appendChild(this.slider_4);
+    this.parent.appendChild(this.slider_4_label);
   }
 
   update(input) {
@@ -195,9 +227,9 @@ class Physics {
     const stats = [
       `fps: ${this.app.ticker.FPS.toFixed(2)}`,
       `mouse: ${input.x.toFixed(2)}, ${input.y.toFixed(2)}`,
-      `segments: ${this.rope.numSegments}`,
+      // `segments: ${this.rope.numSegments}`,
       `total length: ${this.rope.totalLength().toFixed(2)}`,
-      `target length: ${(this.rope.numSegments * this.rope.length).toFixed(2)}`,
+      `target length: ${(this.rope.numSegments * this.rope.segmentLength).toFixed(2)}`,
       `max stretch: ${this.rope.maxStretch().toFixed(2)}`,
       `min stretch: ${this.rope.minStretch().toFixed(2)}`,
     ];
